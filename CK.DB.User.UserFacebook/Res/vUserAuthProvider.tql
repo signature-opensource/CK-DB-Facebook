@@ -1,0 +1,10 @@
+-- SetupConfig: { "AddRequires": "Model.CK.UserFacebookTable" } 
+-- 
+create transformer on CK.vUserAuthProvider
+as
+begin
+	inject "
+	union all
+	select UserId, 'Facebook', LastLoginTime from CK.tUserFacebook where UserId > 0
+	" after first part {select};
+end

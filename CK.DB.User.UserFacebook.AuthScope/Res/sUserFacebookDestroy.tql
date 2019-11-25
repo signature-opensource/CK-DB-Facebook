@@ -1,0 +1,13 @@
+-- SetupConfig: {}
+--
+create transformer on CK.sUserFacebookDestroy
+as
+begin
+	inject "
+	declare @ScopeSetId int;
+	select @ScopeSetId = ScopeSetId from CK.tUserFacebook where UserId = @UserId;" 
+	into "PreDestroy";
+	
+	inject "exec CK.sAuthScopeSetDestroy @ActorId, @ScopeSetId;" 
+	into "PostDestroy";
+end
