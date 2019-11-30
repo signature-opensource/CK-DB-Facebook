@@ -26,20 +26,20 @@ namespace CK.DB.User.UserFacebook.Tests
             {
                 var userName = Guid.NewGuid().ToString();
                 int userId = user.CreateUser( ctx, 1, userName );
-                var googleAccountId = Guid.NewGuid().ToString( "N" );
+                var facebookAccountId = Guid.NewGuid().ToString( "N" );
 
                 var info = infoFactory.Create();
-                info.FacebookAccountId = googleAccountId;
+                info.FacebookAccountId = facebookAccountId;
                 var created = u.CreateOrUpdateFacebookUser( ctx, 1, userId, info );
                 created.OperationResult.Should().Be( UCResult.Created );
-                var info2 = u.FindKnownUserInfo( ctx, googleAccountId );
+                var info2 = u.FindKnownUserInfo( ctx, facebookAccountId );
 
                 info2.UserId.Should().Be( userId );
-                info2.Info.FacebookAccountId.Should().Be( googleAccountId );
+                info2.Info.FacebookAccountId.Should().Be( facebookAccountId );
 
                 u.FindKnownUserInfo( ctx, Guid.NewGuid().ToString() ).Should().BeNull();
                 user.DestroyUser( ctx, 1, userId );
-                u.FindKnownUserInfo( ctx, googleAccountId ).Should().BeNull();
+                u.FindKnownUserInfo( ctx, facebookAccountId ).Should().BeNull();
             }
         }
 
@@ -53,20 +53,20 @@ namespace CK.DB.User.UserFacebook.Tests
             {
                 var userName = Guid.NewGuid().ToString();
                 int userId = await user.CreateUserAsync( ctx, 1, userName );
-                var googleAccountId = Guid.NewGuid().ToString( "N" );
+                var facebookAccountId = Guid.NewGuid().ToString( "N" );
 
                 var info = infoFactory.Create();
-                info.FacebookAccountId = googleAccountId;
+                info.FacebookAccountId = facebookAccountId;
                 var created = await u.CreateOrUpdateFacebookUserAsync( ctx, 1, userId, info );
                 created.OperationResult.Should().Be( UCResult.Created );
-                var info2 = await u.FindKnownUserInfoAsync( ctx, googleAccountId );
+                var info2 = await u.FindKnownUserInfoAsync( ctx, facebookAccountId );
 
                 info2.UserId.Should().Be( userId );
-                info2.Info.FacebookAccountId.Should().Be( googleAccountId );
+                info2.Info.FacebookAccountId.Should().Be( facebookAccountId );
 
                 (await u.FindKnownUserInfoAsync( ctx, Guid.NewGuid().ToString() )).Should().BeNull();
                 await user.DestroyUserAsync( ctx, 1, userId );
-                (await u.FindKnownUserInfoAsync( ctx, googleAccountId )).Should().BeNull();
+                (await u.FindKnownUserInfoAsync( ctx, facebookAccountId )).Should().BeNull();
             }
         }
 
@@ -84,12 +84,12 @@ namespace CK.DB.User.UserFacebook.Tests
             using( var ctx = new SqlStandardCallContext() )
             {
                 string userName = "Facebook auth - " + Guid.NewGuid().ToString();
-                var googleAccountId = Guid.NewGuid().ToString( "N" );
+                var facebookAccountId = Guid.NewGuid().ToString( "N" );
                 var idU = user.CreateUser( ctx, 1, userName );
                 u.Database.ExecuteReader( $"select * from CK.vUserAuthProvider where UserId={idU} and Scheme='Facebook'" )
                     .Rows.Should().BeEmpty();
                 var info = u.CreateUserInfo<IUserFacebookInfo>();
-                info.FacebookAccountId = googleAccountId;
+                info.FacebookAccountId = facebookAccountId;
                 u.CreateOrUpdateFacebookUser( ctx, 1, idU, info );
                 u.Database.ExecuteScalar( $"select count(*) from CK.vUserAuthProvider where UserId={idU} and Scheme='Facebook'" )
                     .Should().Be( 1 );
