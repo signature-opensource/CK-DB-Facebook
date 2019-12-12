@@ -18,7 +18,7 @@ namespace CK.DB.User.UserFacebook.AuthScope.Tests
     {
 
         [Test]
-        public async Task non_user_google_ScopeSet_is_null()
+        public async Task non_user_facebook_ScopeSet_is_null()
         {
             var user = TestHelper.StObjMap.StObjs.Obtain<UserTable>();
             var p = TestHelper.StObjMap.StObjs.Obtain<Package>();

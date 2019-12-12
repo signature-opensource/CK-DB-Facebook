@@ -55,15 +55,15 @@ namespace CK.DB.User.UserFacebook
         /// Returns null if no such user exists.
         /// </summary>
         /// <param name="ctx">The call context to use.</param>
-        /// <param name="googleAccountId">The google account identifier.</param>
+        /// <param name="facebookAccountId">The facebook account identifier.</param>
         /// <returns>A <see cref="IdentifiedUserInfo{T}"/> or null if not found.</returns>
-        public IdentifiedUserInfo<IUserFacebookInfo> FindKnownUserInfo( ISqlCallContext ctx, string googleAccountId )
+        public IdentifiedUserInfo<IUserFacebookInfo> FindKnownUserInfo( ISqlCallContext ctx, string facebookAccountId )
         {
-            using( var c = CreateReaderCommand( googleAccountId ) )
+            using( var c = CreateReaderCommand( facebookAccountId ) )
             {
                 return ctx[Database].ExecuteSingleRow( c, r => r == null
                                                             ? null
-                                                            : DoCreateUserUnfo( googleAccountId, r ) );
+                                                            : DoCreateUserUnfo( facebookAccountId, r ) );
             }
         }
 

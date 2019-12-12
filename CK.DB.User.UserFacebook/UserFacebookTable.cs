@@ -111,16 +111,16 @@ namespace CK.DB.User.UserFacebook
         /// Returns null if no such user exists.
         /// </summary>
         /// <param name="ctx">The call context to use.</param>
-        /// <param name="googleAccountId">The google account identifier.</param>
+        /// <param name="facebookAccountId">The facebook account identifier.</param>
         /// <param name="cancellationToken">Optional cancellation token.</param>
         /// <returns>A <see cref="IdentifiedUserInfo{T}"/> object or null if not found.</returns>
-        public Task<IdentifiedUserInfo<IUserFacebookInfo>> FindKnownUserInfoAsync( ISqlCallContext ctx, string googleAccountId, CancellationToken cancellationToken = default( CancellationToken ) )
+        public Task<IdentifiedUserInfo<IUserFacebookInfo>> FindKnownUserInfoAsync( ISqlCallContext ctx, string facebookAccountId, CancellationToken cancellationToken = default( CancellationToken ) )
         {
-            using( var c = CreateReaderCommand( googleAccountId ) )
+            using( var c = CreateReaderCommand( facebookAccountId ) )
             {
                 return ctx[Database].ExecuteSingleRowAsync( c, r => r == null
                                                                     ? null
-                                                                    : DoCreateUserUnfo( googleAccountId, r ) );
+                                                                    : DoCreateUserUnfo( facebookAccountId, r ) );
             }
         }
 
@@ -128,21 +128,21 @@ namespace CK.DB.User.UserFacebook
         /// Creates a the reader command parametrized with the Facebook account identifier.
         /// Single-row returned columns are defined by <see cref="AppendUserInfoColumns(StringBuilder)"/>.
         /// </summary>
-        /// <param name="googleAccountId">Facebook account identifier to look for.</param>
+        /// <param name="facebookAccountId">Facebook account identifier to look for.</param>
         /// <returns>A ready to use reader command.</returns>
-        SqlCommand CreateReaderCommand( string googleAccountId )
+        SqlCommand CreateReaderCommand( string facebookAccountId )
         {
             StringBuilder b = new StringBuilder( "select " );
             AppendUserInfoColumns( b ).Append( " from CK.tUserFacebook where FacebookAccountId=@A" );
             var c = new SqlCommand( b.ToString() );
-            c.Parameters.Add( new SqlParameter( "@A", googleAccountId ) );
+            c.Parameters.Add( new SqlParameter( "@A", facebookAccountId ) );
             return c;
         }
 
-        IdentifiedUserInfo<IUserFacebookInfo> DoCreateUserUnfo( string googleAccountId, SqlDataRow r )
+        IdentifiedUserInfo<IUserFacebookInfo> DoCreateUserUnfo( string facebookAccountId, SqlDataRow r )
         {
             var info = _infoFactory.Create();
-            info.FacebookAccountId = googleAccountId;
+            info.FacebookAccountId = facebookAccountId;
             FillUserFacebookInfo( info, r, 1 );
             return new IdentifiedUserInfo<IUserFacebookInfo>( r.GetInt32( 0 ), info );
         }

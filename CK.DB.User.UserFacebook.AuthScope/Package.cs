@@ -16,18 +16,18 @@ namespace CK.DB.User.UserFacebook.AuthScope
     public class Package : SqlPackage
     {
         AuthScopeSetTable _scopeSetTable;
-        UserFacebookTable _googleTable;
+        UserFacebookTable _facebookTable;
 
-        void StObjConstruct( AuthScopeSetTable scopeSetTable, UserFacebookTable googleTable )
+        void StObjConstruct( AuthScopeSetTable scopeSetTable, UserFacebookTable facebookTable )
         {
             _scopeSetTable = scopeSetTable;
-            _googleTable = googleTable;
+            _facebookTable = facebookTable;
         }
 
         /// <summary>
         /// Gets the <see cref="UserFacebookTable"/>.
         /// </summary>
-        public UserFacebookTable UserFacebookTable => _googleTable;
+        public UserFacebookTable UserFacebookTable => _facebookTable;
 
         /// <summary>
         /// Gets the <see cref="AuthScopeSetTable"/>.
