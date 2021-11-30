@@ -1,12 +1,11 @@
 using CK.SqlServer;
 using CK.Core;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using CK.DB.Auth;
-using CK.Text;
 
 namespace CK.DB.User.UserFacebook
 {
@@ -111,16 +110,17 @@ namespace CK.DB.User.UserFacebook
         /// Returns null if no such user exists.
         /// </summary>
         /// <param name="ctx">The call context to use.</param>
-        /// <param name="facebookAccountId">The facebook account identifier.</param>
+        /// <param name="facebookAccountId">The Facebook account identifier.</param>
         /// <param name="cancellationToken">Optional cancellation token.</param>
         /// <returns>A <see cref="IdentifiedUserInfo{T}"/> object or null if not found.</returns>
-        public Task<IdentifiedUserInfo<IUserFacebookInfo>> FindKnownUserInfoAsync( ISqlCallContext ctx, string facebookAccountId, CancellationToken cancellationToken = default( CancellationToken ) )
+        public async Task<IdentifiedUserInfo<IUserFacebookInfo>?> FindKnownUserInfoAsync( ISqlCallContext ctx, string facebookAccountId, CancellationToken cancellationToken = default )
         {
             using( var c = CreateReaderCommand( facebookAccountId ) )
             {
-                return ctx[Database].ExecuteSingleRowAsync( c, r => r == null
+                return await ctx[Database].ExecuteSingleRowAsync( c, r => r == null
                                                                     ? null
-                                                                    : DoCreateUserUnfo( facebookAccountId, r ) );
+                                                                    : DoCreateUserUnfo( facebookAccountId, r ), cancellationToken )
+                                          .ConfigureAwait( false );
             }
         }
 
