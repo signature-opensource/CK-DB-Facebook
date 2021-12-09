@@ -7,9 +7,7 @@ namespace CodeCake
 
     /// <summary>
     /// Sample build "script".
-    /// Build scripts can be decorated with AddPath attributes that inject existing paths into the PATH environment variable. 
     /// </summary>
-
     public partial class Build : CodeCakeHost
     {
         public Build()
