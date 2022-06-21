@@ -1,5 +1,5 @@
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Threading.Tasks;
 using CK.Core;
 using CK.DB.Actor;
@@ -18,7 +18,7 @@ namespace CK.DB.User.UserFacebook.AuthScope.Tests
     {
 
         [Test]
-        public async Task non_user_facebook_ScopeSet_is_null()
+        public async Task non_user_facebook_ScopeSet_is_null_Async()
         {
             var user = TestHelper.StObjMap.StObjs.Obtain<UserTable>();
             var p = TestHelper.StObjMap.StObjs.Obtain<Package>();
@@ -30,7 +30,7 @@ namespace CK.DB.User.UserFacebook.AuthScope.Tests
         }
 
         [Test]
-        public async Task setting_default_scopes_impact_new_users()
+        public async Task setting_default_scopes_impact_new_usersl_Async()
         {
             var user = TestHelper.StObjMap.StObjs.Obtain<UserTable>();
             var p = TestHelper.StObjMap.StObjs.Obtain<Package>();

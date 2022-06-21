@@ -1,5 +1,5 @@
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Threading.Tasks;
 using CK.Core;
 using CK.DB.Actor;
@@ -44,7 +44,7 @@ namespace CK.DB.User.UserFacebook.Tests
         }
 
         [Test]
-        public async Task create_Facebook_user_and_check_read_info_object_method_async()
+        public async Task create_Facebook_user_and_check_read_info_object_method_async_Async()
         {
             var u = TestHelper.StObjMap.StObjs.Obtain<UserFacebookTable>();
             var user = TestHelper.StObjMap.StObjs.Obtain<UserTable>();
