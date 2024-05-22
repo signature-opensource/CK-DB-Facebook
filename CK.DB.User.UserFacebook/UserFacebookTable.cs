@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using CK.DB.Auth;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CK.DB.User.UserFacebook
 {
@@ -17,6 +18,7 @@ namespace CK.DB.User.UserFacebook
     [SqlObjectItem( "transform:sUserDestroy" )]
     public abstract partial class UserFacebookTable : SqlTable, IGenericAuthenticationProvider<IUserFacebookInfo>
     {
+        [AllowNull]
         IPocoFactory<IUserFacebookInfo> _infoFactory;
 
         /// <summary>
@@ -28,6 +30,10 @@ namespace CK.DB.User.UserFacebook
         {
             _infoFactory = infoFactory;
         }
+
+        public bool CanCreatePayload => true;
+
+        object IGenericAuthenticationProvider.CreatePayload() => _infoFactory.Create();
 
         IUserFacebookInfo IGenericAuthenticationProvider<IUserFacebookInfo>.CreatePayload() => _infoFactory.Create();
 
@@ -49,7 +55,7 @@ namespace CK.DB.User.UserFacebook
         /// <param name="mode">Optionnaly configures Create, Update only or WithLogin behavior.</param>
         /// <param name="cancellationToken">Optional cancellation token.</param>
         /// <returns>The result.</returns>
-        public async Task<UCLResult> CreateOrUpdateFacebookUserAsync( ISqlCallContext ctx, int actorId, int userId, IUserFacebookInfo info, UCLMode mode = UCLMode.CreateOrUpdate, CancellationToken cancellationToken = default( CancellationToken ) )
+        public async Task<UCLResult> CreateOrUpdateFacebookUserAsync( ISqlCallContext ctx, int actorId, int userId, IUserFacebookInfo info, UCLMode mode = UCLMode.CreateOrUpdate, CancellationToken cancellationToken = default )
         {
             var r = await FacebookUserUCLAsync( ctx, actorId, userId, info, mode, cancellationToken ).ConfigureAwait( false );
             return r;
@@ -201,12 +207,12 @@ namespace CK.DB.User.UserFacebook
             return LoginUserAsync( ctx, info, actualLogin, cancellationToken );
         }
 
-        void IGenericAuthenticationProvider.DestroyUser( ISqlCallContext ctx, int actorId, int userId, string schemeSuffix )
+        void IGenericAuthenticationProvider.DestroyUser( ISqlCallContext ctx, int actorId, int userId, string? schemeSuffix )
         {
             DestroyFacebookUser( ctx, actorId, userId );
         }
 
-        Task IGenericAuthenticationProvider.DestroyUserAsync( ISqlCallContext ctx, int actorId, int userId, string schemeSuffix, CancellationToken cancellationToken )
+        Task IGenericAuthenticationProvider.DestroyUserAsync( ISqlCallContext ctx, int actorId, int userId, string? schemeSuffix, CancellationToken cancellationToken )
         {
             return DestroyFacebookUserAsync( ctx, actorId, userId, cancellationToken );
         }
