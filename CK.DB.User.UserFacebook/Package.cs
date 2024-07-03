@@ -14,11 +14,5 @@ namespace CK.DB.User.UserFacebook
         {
         }
 
-        /// <summary>
-        /// Gets the user Facebook table.
-        /// </summary>
-        [InjectObject]
-        public UserFacebookTable UserFacebookTable { get; protected set; }
-
     }
 }

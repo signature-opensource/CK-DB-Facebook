@@ -57,7 +57,7 @@ namespace CK.DB.User.UserFacebook
         /// <param name="ctx">The call context to use.</param>
         /// <param name="facebookAccountId">The facebook account identifier.</param>
         /// <returns>A <see cref="IdentifiedUserInfo{T}"/> or null if not found.</returns>
-        public IdentifiedUserInfo<IUserFacebookInfo> FindKnownUserInfo( ISqlCallContext ctx, string facebookAccountId )
+        public IdentifiedUserInfo<IUserFacebookInfo>? FindKnownUserInfo( ISqlCallContext ctx, string facebookAccountId )
         {
             using( var c = CreateReaderCommand( facebookAccountId ) )
             {
