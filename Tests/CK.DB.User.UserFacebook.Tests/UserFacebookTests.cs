@@ -9,6 +9,7 @@ using System.Linq;
 using CK.DB.Auth;
 using System.Collections.Generic;
 using FluentAssertions;
+using CK.Testing;
 using static CK.Testing.MonitorTestHelper;
 
 namespace CK.DB.User.UserFacebook.Tests
@@ -22,7 +23,7 @@ namespace CK.DB.User.UserFacebook.Tests
             var u = SharedEngine.Map.StObjs.Obtain<UserFacebookTable>();
             var user = SharedEngine.Map.StObjs.Obtain<UserTable>();
             var infoFactory = SharedEngine.Map.StObjs.Obtain<IPocoFactory<IUserFacebookInfo>>();
-            using( var ctx = new SqlStandardCallContext() )
+            using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
             {
                 var userName = Guid.NewGuid().ToString();
                 int userId = user.CreateUser( ctx, 1, userName );
@@ -49,7 +50,7 @@ namespace CK.DB.User.UserFacebook.Tests
             var u = SharedEngine.Map.StObjs.Obtain<UserFacebookTable>();
             var user = SharedEngine.Map.StObjs.Obtain<UserTable>();
             var infoFactory = SharedEngine.Map.StObjs.Obtain<IPocoFactory<IUserFacebookInfo>>();
-            using( var ctx = new SqlStandardCallContext() )
+            using( var ctx = new SqlStandardCallContext( TestHelper.Monitor) )
             {
                 var userName = Guid.NewGuid().ToString();
                 int userId = await user.CreateUserAsync( ctx, 1, userName );
@@ -81,7 +82,7 @@ namespace CK.DB.User.UserFacebook.Tests
         {
             var u = SharedEngine.Map.StObjs.Obtain<UserFacebookTable>();
             var user = SharedEngine.Map.StObjs.Obtain<UserTable>();
-            using( var ctx = new SqlStandardCallContext() )
+            using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
             {
                 string userName = "Facebook auth - " + Guid.NewGuid().ToString();
                 var facebookAccountId = Guid.NewGuid().ToString( "N" );

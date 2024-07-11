@@ -9,6 +9,7 @@ using System.Linq;
 using CK.DB.Auth;
 using CK.DB.Auth.AuthScope;
 using FluentAssertions;
+using CK.Testing;
 using static CK.Testing.MonitorTestHelper;
 
 namespace CK.DB.User.UserFacebook.AuthScope.Tests
@@ -64,12 +65,12 @@ namespace CK.DB.User.UserFacebook.AuthScope.Tests
                                             .And.Contain( "[A]other" );
 
                 {
-                    int id = await user.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString() );
+                    int userId = await user.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString() );
                     IUserFacebookInfo userInfo = p.UserFacebookTable.CreateUserInfo<IUserFacebookInfo>();
                     userInfo.FacebookAccountId = Guid.NewGuid().ToString();
-                    await p.UserFacebookTable.CreateOrUpdateFacebookUserAsync( ctx, 1, id, userInfo, UCLMode.CreateOnly | UCLMode.UpdateOnly );
-                    userInfo = (IUserFacebookInfo)(await p.UserFacebookTable.FindKnownUserInfoAsync( ctx, userInfo.FacebookAccountId )).Info;
-                    AuthScopeSet userSet = await p.ReadScopeSetAsync( ctx, id );
+                    await p.UserFacebookTable.CreateOrUpdateFacebookUserAsync( ctx, 1, userId, userInfo, UCLMode.CreateOnly | UCLMode.UpdateOnly );
+
+                    AuthScopeSet userSet = await p.ReadScopeSetAsync( ctx, userId );
                     userSet.ToString().Should().Contain( "[W]thing" )
                                                .And.Contain( "[W]other" )
                                                .And.Contain( "[W]nimp" );
