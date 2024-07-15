@@ -4,13 +4,10 @@
     <Description>This package adds a ScopeSetId column to CK.tUserFacebook table.</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CK.DB.Auth.AuthScope" Version="0.0.0--04yzfbn-develop" />
+    <PackageReference Include="CK.DB.Auth.AuthScope" Version="0.0.0--04z7c0b-develop" />
     <ProjectReference Include="..\CK.DB.User.UserFacebook\CK.DB.User.UserFacebook.csproj" />
   </ItemGroup>
-  
   <ItemGroup>
     <EmbeddedResource Include="**\*.sql;**\*.tql;**\*.y4" />
   </ItemGroup>
-
-  
 </Project>
