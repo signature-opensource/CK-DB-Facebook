@@ -1,19 +1,18 @@
 using CK.Core;
 using System;
 
-namespace CK.DB.User.UserFacebook.AuthScope
+namespace CK.DB.User.UserFacebook.AuthScope;
+
+/// <summary>
+/// Extends <see cref="UserFacebook.IUserFacebookInfo"/> with ScopeSet identifier.
+/// </summary>
+public interface IUserFacebookInfo : UserFacebook.IUserFacebookInfo
 {
     /// <summary>
-    /// Extends <see cref="UserFacebook.IUserFacebookInfo"/> with ScopeSet identifier.
+    /// Gets or sets the scope set identifier.
+    /// Note that the ScopeSetId is intrinsic: a new ScopeSetId is acquired 
+    /// and set only when a new UserFacebook is created (by copy from 
+    /// the default one - the ScopeSet of the UserFacebook 0).
     /// </summary>
-    public interface IUserFacebookInfo : UserFacebook.IUserFacebookInfo
-    {
-        /// <summary>
-        /// Gets or sets the scope set identifier.
-        /// Note that the ScopeSetId is intrinsic: a new ScopeSetId is acquired 
-        /// and set only when a new UserFacebook is created (by copy from 
-        /// the default one - the ScopeSet of the UserFacebook 0).
-        /// </summary>
-        int ScopeSetId { get; set; }
-    }
+    int ScopeSetId { get; set; }
 }
