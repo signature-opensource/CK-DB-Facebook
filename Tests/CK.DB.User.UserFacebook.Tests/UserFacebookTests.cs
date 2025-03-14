@@ -8,7 +8,7 @@ using NUnit.Framework;
 using System.Linq;
 using CK.DB.Auth;
 using System.Collections.Generic;
-using FluentAssertions;
+using Shouldly;
 using CK.Testing;
 using static CK.Testing.MonitorTestHelper;
 
@@ -32,15 +32,15 @@ public class UserFacebookTests
             var info = infoFactory.Create();
             info.FacebookAccountId = facebookAccountId;
             var created = u.CreateOrUpdateFacebookUser( ctx, 1, userId, info );
-            created.OperationResult.Should().Be( UCResult.Created );
+            created.OperationResult.ShouldBe( UCResult.Created );
             var info2 = u.FindKnownUserInfo( ctx, facebookAccountId );
 
-            info2.UserId.Should().Be( userId );
-            info2.Info.FacebookAccountId.Should().Be( facebookAccountId );
+            info2.UserId.ShouldBe( userId );
+            info2.Info.FacebookAccountId.ShouldBe( facebookAccountId );
 
-            u.FindKnownUserInfo( ctx, Guid.NewGuid().ToString() ).Should().BeNull();
+            u.FindKnownUserInfo( ctx, Guid.NewGuid().ToString() ).ShouldBeNull();
             user.DestroyUser( ctx, 1, userId );
-            u.FindKnownUserInfo( ctx, facebookAccountId ).Should().BeNull();
+            u.FindKnownUserInfo( ctx, facebookAccountId ).ShouldBeNull();
         }
     }
 
@@ -59,15 +59,15 @@ public class UserFacebookTests
             var info = infoFactory.Create();
             info.FacebookAccountId = facebookAccountId;
             var created = await u.CreateOrUpdateFacebookUserAsync( ctx, 1, userId, info );
-            created.OperationResult.Should().Be( UCResult.Created );
+            created.OperationResult.ShouldBe( UCResult.Created );
             var info2 = await u.FindKnownUserInfoAsync( ctx, facebookAccountId );
 
-            info2.UserId.Should().Be( userId );
-            info2.Info.FacebookAccountId.Should().Be( facebookAccountId );
+            info2.UserId.ShouldBe( userId );
+            info2.Info.FacebookAccountId.ShouldBe( facebookAccountId );
 
-            (await u.FindKnownUserInfoAsync( ctx, Guid.NewGuid().ToString() )).Should().BeNull();
+            (await u.FindKnownUserInfoAsync( ctx, Guid.NewGuid().ToString() )).ShouldBeNull();
             await user.DestroyUserAsync( ctx, 1, userId );
-            (await u.FindKnownUserInfoAsync( ctx, facebookAccountId )).Should().BeNull();
+            (await u.FindKnownUserInfoAsync( ctx, facebookAccountId )).ShouldBeNull();
         }
     }
 
@@ -88,15 +88,15 @@ public class UserFacebookTests
             var facebookAccountId = Guid.NewGuid().ToString( "N" );
             var idU = user.CreateUser( ctx, 1, userName );
             u.Database.ExecuteReader( $"select * from CK.vUserAuthProvider where UserId={idU} and Scheme='Facebook'" )
-                .Rows.Should().BeEmpty();
+                .Rows.ShouldBeEmpty();
             var info = u.CreateUserInfo<IUserFacebookInfo>();
             info.FacebookAccountId = facebookAccountId;
             u.CreateOrUpdateFacebookUser( ctx, 1, idU, info );
             u.Database.ExecuteScalar( $"select count(*) from CK.vUserAuthProvider where UserId={idU} and Scheme='Facebook'" )
-                .Should().Be( 1 );
+                .ShouldBe( 1 );
             u.DestroyFacebookUser( ctx, 1, idU );
             u.Database.ExecuteReader( $"select * from CK.vUserAuthProvider where UserId={idU} and Scheme='Facebook'" )
-                .Rows.Should().BeEmpty();
+                .Rows.ShouldBeEmpty();
         }
     }
 
