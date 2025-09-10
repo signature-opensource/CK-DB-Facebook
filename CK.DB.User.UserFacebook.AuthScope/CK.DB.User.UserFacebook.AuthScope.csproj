@@ -4,7 +4,7 @@
     <Description>This package adds a ScopeSetId column to CK.tUserFacebook table.</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CK.DB.Auth.AuthScope" Version="25.0.1--0042-develop" />
+    <PackageReference Include="CK.DB.Auth.AuthScope" Version="25.0.1--0043-develop" />
     <ProjectReference Include="..\CK.DB.User.UserFacebook\CK.DB.User.UserFacebook.csproj" />
   </ItemGroup>
   <ItemGroup>
